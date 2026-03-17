@@ -1,0 +1,33 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.32bitsret/demostudio",
+  "title": "DemoStudio",
+  "description": "Generate short-form video ads for Instagram Reels and TikTok from any AI assistant.",
+  "version": "0.1.1",
+  "license": "MIT",
+  "homepage": "https://demostudio.xyz",
+  "repository": {
+    "source": "github",
+    "url": "https://github.com/32bitsret/demostudio-mcp-server",
+    "id": "1183834874"
+  },
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@demostudio/mcp-server",
+      "version": "0.1.1",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "DEMOSTUDIO_API_KEY",
+          "description": "Your DemoStudio API key — generate one at https://demostudio.xyz/settings",
+          "isRequired": true,
+          "isSecret": true,
+          "format": "string"
+        }
+      ]
+    }
+  ]
+}

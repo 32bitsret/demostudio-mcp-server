@@ -1,10 +1,15 @@
 {
   "name": "@demostudio/mcp-server",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "MCP server for DemoStudio — generate short-form video ads from any AI assistant",
+  "mcpName": "io.github.32bitsret/demostudio",
   "keywords": ["mcp", "demostudio", "video", "ai", "reels", "tiktok"],
   "homepage": "https://demostudio.xyz",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/32bitsret/demostudio-mcp-server.git"
+  },
   "type": "module",
   "main": "dist/index.js",
   "bin": {
