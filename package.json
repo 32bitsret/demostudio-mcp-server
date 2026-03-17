@@ -1,0 +1,30 @@
+{
+  "name": "@demostudio/mcp-server",
+  "version": "0.1.0",
+  "description": "MCP server for DemoStudio — generate short-form video ads from any AI assistant",
+  "keywords": ["mcp", "demostudio", "video", "ai", "reels", "tiktok"],
+  "homepage": "https://demostudio.xyz",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "demostudio-mcp": "dist/index.js"
+  },
+  "files": ["dist", "README.md"],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0",
+    "@types/node": "^20.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
