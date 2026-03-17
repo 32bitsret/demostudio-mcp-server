@@ -6,7 +6,7 @@ MCP server for [DemoStudio](https://demostudio.xyz) — lets any MCP-compatible 
 
 - **`generate_video`** — Turn a text brief into a rendered Instagram Reel / TikTok / YouTube Short
 - **`get_video_status`** — Check build progress and get the exported video URL
-- **`list_templates`** — Show all 17 available motion-graphic templates
+- **`list_capabilities`** — Show all 5 scene types and 17 Remotion templates
 - **`create_schedule`** — Set up the Agent to auto-generate videos on a recurring schedule
 
 ## Requirements
@@ -106,7 +106,7 @@ Returns a project URL to preview and export the video.
 |-----------|------|----------|-------------|
 | `project_id` | string | ✓ | Project UUID from `generate_video` |
 
-### `list_templates`
+### `list_capabilities`
 
 No parameters. Returns all 17 Remotion templates with descriptions.
 
@@ -134,3 +134,58 @@ Active accounts receive up to **500 bonus credits** every month.
 ## License
 
 MIT
+
+---
+
+## Maintainer guide — publishing updates
+
+### 1. Make code changes in `src/index.ts`
+
+### 2. Bump the version
+```bash
+npm version patch   # 0.1.2 → 0.1.3  (bug fix / small change)
+npm version minor   # 0.1.2 → 0.2.0  (new tool or renamed tool)
+npm version major   # 0.1.2 → 1.0.0  (breaking change)
+```
+
+### 3. Publish to npm
+```bash
+npm publish --access public
+```
+The `prepublishOnly` script runs `tsc` automatically before publishing.
+
+### 4. Update `server.json` — bump both version fields
+```json
+{
+  "version": "0.1.3",          ← top-level version
+  "packages": [{
+    "version": "0.1.3"         ← must match npm version
+  }]
+}
+```
+
+### 5. Re-authenticate and publish to MCP registry
+The registry JWT expires after ~1 hour. Always re-login before publishing.
+```bash
+# Download the publisher binary (if not already on PATH)
+curl -L "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" | tar xz mcp-publisher
+
+# Login via GitHub device flow
+./mcp-publisher login github
+# → go to https://github.com/login/device and enter the printed code
+
+# Publish
+./mcp-publisher publish server.json
+```
+
+### 6. Push to GitHub
+```bash
+git add -A
+git commit -m "chore: bump to vX.Y.Z — <what changed>"
+git push origin main
+```
+
+### Notes
+- `server.json` `$schema` URL is versioned — only update it if the registry publishes a new schema version (check https://github.com/modelcontextprotocol/registry/blob/main/docs/reference/server-json/CHANGELOG.md)
+- `.mcpregistry_*` files are gitignored — they contain auth tokens and must never be committed
+- The npm token is stored in `~/.npmrc` — re-run `npm set //registry.npmjs.org/:_authToken <token>` if it expires

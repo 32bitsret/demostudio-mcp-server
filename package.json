@@ -1,9 +1,16 @@
 {
   "name": "@demostudio/mcp-server",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "MCP server for DemoStudio — generate short-form video ads from any AI assistant",
   "mcpName": "io.github.32bitsret/demostudio",
-  "keywords": ["mcp", "demostudio", "video", "ai", "reels", "tiktok"],
+  "keywords": [
+    "mcp",
+    "demostudio",
+    "video",
+    "ai",
+    "reels",
+    "tiktok"
+  ],
   "homepage": "https://demostudio.xyz",
   "license": "MIT",
   "repository": {
@@ -15,7 +22,10 @@
   "bin": {
     "demostudio-mcp": "dist/index.js"
   },
-  "files": ["dist", "README.md"],
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",

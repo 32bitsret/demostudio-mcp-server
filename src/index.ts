@@ -97,10 +97,11 @@ const TOOLS = [
     },
   },
   {
-    name: 'list_templates',
+    name: 'list_capabilities',
     description:
-      'List all 17 available Remotion motion-graphic templates with their descriptions and use cases. ' +
-      'Use this to help a user understand what visual styles are available before writing a detailed prompt.',
+      'List all scene types and Remotion motion-graphic templates available in DemoStudio. ' +
+      'Call this before writing a detailed prompt so you can reference the correct scene types and template names. ' +
+      'Returns all 5 scene types (cinematic, canvas, slideshow, remotion, video) and all 17 Remotion templates.',
     inputSchema: {
       type: 'object' as const,
       properties: {},
@@ -231,7 +232,15 @@ async function handleGetVideoStatus(args: Record<string, any>) {
   return lines.join('\n')
 }
 
-function handleListTemplates() {
+function handleListCapabilities() {
+  const sceneTypes = [
+    { type: 'cinematic', desc: 'AI-generated video clip (Runway Gen4.5 or Google Veo 3.1). Best for product visuals, lifestyle shots, abstract backgrounds. Includes voiceover.' },
+    { type: 'canvas',    desc: 'Animated text + gradient/color background. No AI video — fast to render, zero Runway cost. Best for hooks, stats, CTAs, and punchy one-liners.' },
+    { type: 'slideshow', desc: 'Sequence of uploaded images or screenshots with Ken Burns / zoom animations. Best for showing UI, screenshots, or photo galleries.' },
+    { type: 'remotion',  desc: 'React-based motion-graphic template (see template list below). Pixel-perfect branded cards. Best for structured data like reviews, pricing, how-it-works.' },
+    { type: 'video',     desc: 'Uploaded video clip dropped directly into the timeline. Use for existing footage, screen recordings, or UGC clips.' },
+  ]
+
   const templates = [
     { id: 'kinetic-text',      duration: '3–8s',   use: 'Word-by-word animated text reveal. Hooks, punchy statements, bold claims.' },
     { id: 'app-mockup',        duration: '4–10s',  use: 'iPhone frame with scrolling/zooming mobile screenshot.' },
@@ -254,13 +263,19 @@ function handleListTemplates() {
   ]
 
   const lines = [
-    '**DemoStudio Remotion Templates**',
+    '## DemoStudio Scene Types',
     '',
-    'Reference these by name in your video prompt to request specific scene types.',
+    'Each scene in a video has a type. Mix types freely within one video.',
+    '',
+    ...sceneTypes.map((s) => `**${s.type}** — ${s.desc}`),
+    '',
+    '## Remotion Templates (scene type: remotion)',
+    '',
+    'Reference these by template name when specifying a remotion scene.',
     '',
     ...templates.map((t) => `**${t.id}** (${t.duration}) — ${t.use}`),
     '',
-    'Tip: Mix templates freely with cinematic (AI video) and canvas (animated text) scenes in one video.',
+    'Tip: A typical high-converting Reel mixes cinematic scenes for visuals, canvas for the hook and CTA, and remotion templates for structured proof (reviews, stats, pricing).',
   ]
 
   return lines.join('\n')
@@ -346,8 +361,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       case 'get_video_status':
         text = await handleGetVideoStatus(args)
         break
-      case 'list_templates':
-        text = handleListTemplates()
+      case 'list_capabilities':
+        text = handleListCapabilities()
         break
       case 'create_schedule':
         text = await handleCreateSchedule(args)
